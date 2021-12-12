@@ -1,6 +1,6 @@
 import pygame
 import time
-import color_constants as Color
+import color_constants as color
 import game_constants
 import drawing
 
@@ -10,10 +10,11 @@ from SearchAgent import SearchAgent
 
 pygame.display.set_caption("Search Algorithms Visualizer")
 
+
 def make_graph(rows, width):
     grid = []
     gap = width // rows
-    
+
     for i in range(rows):
         grid.append([])
         for j in range(rows):
@@ -21,6 +22,7 @@ def make_graph(rows, width):
             grid[i].append(node)
 
     return grid
+
 
 def get_clicked_pos(pos, rows, width):
     gap = width // rows
@@ -30,6 +32,7 @@ def get_clicked_pos(pos, rows, width):
     col = x // gap
 
     return row, col
+
 
 def main(win, width):
     ROWS = 40
@@ -46,14 +49,13 @@ def main(win, width):
             if event.type == pygame.QUIT:
                 run = False
 
-            if pygame.mouse.get_pressed()[0]: # LEFT
+            if pygame.mouse.get_pressed()[0]:  # LEFT
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
                 node = graph[row][col]
                 if not start_state and node != goal_state:
                     start_state = node
                     start_state.make_start()
-                    
 
                 elif not goal_state and node != start_state:
                     goal_state = node
@@ -63,7 +65,7 @@ def main(win, width):
                     node.make_barrier()
 
                 drawing.draw(win, graph, ROWS, width)
-            elif pygame.mouse.get_pressed()[2]: # RIGHT
+            elif pygame.mouse.get_pressed()[2]:  # RIGHT
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
                 node = graph[row][col]
@@ -93,20 +95,20 @@ def main(win, width):
                     curr = start_state
 
                     for node in path[1:]:
-                        curr.color = Color.WHITE
-                        node.color = Color.BLUE
+                        curr.color = color.WHITE
+                        node.color = color.BLUE
                         curr = node
                         time.sleep(0.2)
                         drawing.draw(win, graph, ROWS, width)
-
 
                 if event.key == pygame.K_c:
                     start_state = None
                     goal_state = None
                     graph = make_graph(ROWS, width)
 
-        #drawing.draw(win, graph, ROWS, width)
+        # drawing.draw(win, graph, ROWS, width)
     pygame.quit()
+
 
 if __name__ == "__main__":
     main(game_constants.WIN, game_constants.WIDTH)
