@@ -1,11 +1,12 @@
-import time
+import sys
 import pygame
-import game_constants
-
+from pygame.locals import *
+import time
+import color_constants as color
+import illustrator
+import game_constants as gc
 from Stack import Stack
 from Queue import Queue
-import drawing
-import game_constants
 
 
 class SearchAgent:
@@ -13,7 +14,38 @@ class SearchAgent:
         self.graph = graph
         self.problem = problem
 
-    def dfs(self):
+    def walk_path(self):
+        for node in self.problem.path:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+            if node is self.problem.start_state:
+                continue
+            node.make_path()
+            illustrator.draw(gc.WIN, self.graph)
+
+        curr = self.problem.start_state
+
+        for node in self.problem.path[1:]:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+            if self.problem.goal_state.color == color.WHITE:
+                self.problem.goal_state.color = color.GOLD
+            else:
+                self.problem.goal_state.color = color.WHITE
+            curr.color = color.WHITE
+            node.color = color.BLUE
+            curr = node
+            time.sleep(0.2)
+            illustrator.draw(gc.WIN, self.graph)
+
+
+class DepthFirstSearch(SearchAgent):
+
+    def algorithm(self):
         closed = set()
         fringe = Stack()
         start_node = self.problem.start_state
@@ -25,12 +57,13 @@ class SearchAgent:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                
+
             node, path = fringe.pop()
-            
+
             if node == goal_node:
                 path.append(node)
-                return path
+                self.problem.path = path
+                return
 
             if node not in closed:
                 closed.add(node)
@@ -42,13 +75,16 @@ class SearchAgent:
 
                     if neighbor not in closed and neighbor is not start_node:
                         neighbor.make_open()
-                    drawing.draw(game_constants.WIN, self.graph, 50, game_constants.WIDTH)
+                    illustrator.draw(gc.WIN, self.graph)
                 if node != start_node:
                     node.make_closed()
 
-            drawing.draw(game_constants.WIN, self.graph, 50, game_constants.WIDTH)
+            illustrator.draw(gc.WIN, self.graph)
 
-    def bfs(self):
+
+class BreadthFirstSearch(SearchAgent):
+
+    def algorithm(self):
         closed = set()
         fringe = Queue()
         start_node = self.problem.start_state
@@ -60,9 +96,9 @@ class SearchAgent:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                
+
             node, path = fringe.pop()
-            
+
             if node == goal_node:
                 path.append(node)
                 return path
@@ -77,8 +113,8 @@ class SearchAgent:
 
                     if neighbor not in closed and neighbor is not start_node:
                         neighbor.make_open()
-                    drawing.draw(game_constants.WIN, self.graph, 50, game_constants.WIDTH)
+                    illustrator.draw(gc.WIN, self.graph)
                 if node != start_node:
                     node.make_closed()
 
-            drawing.draw(game_constants.WIN, self.graph, 50, game_constants.WIDTH)
+            illustrator.draw(gc.WIN, self.graph)
