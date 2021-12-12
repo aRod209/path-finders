@@ -101,7 +101,8 @@ class BreadthFirstSearch(SearchAgent):
 
             if node == goal_node:
                 path.append(node)
-                return path
+                self.problem.path = path
+                return
 
             if node not in closed:
                 closed.add(node)
