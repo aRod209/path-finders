@@ -1,4 +1,5 @@
 import color_constants as Color
+import random
 import pygame
 
 class Node:
@@ -7,7 +8,8 @@ class Node:
         self.col = col
         self.x = col * width
         self.y = row * width
-        self.color = Color.GREEN
+        self.color = Color.LIGHT_GREEN
+        self.cost = 1
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
@@ -30,8 +32,17 @@ class Node:
     def is_end(self):
         return self.color == Color.GOLD
 
+    def is_low_cost(self):
+        return self.color == Color.LIGHT_GREEN
+
+    def is_medium_cost(self):
+        return self.color == Color.GREEN
+
+    def is_high_cost(self):
+        return self.color == Color.DARK_GREEN
+
     def reset(self):
-        self.color = Color.GREEN
+        self.color = Color.LIGHT_GREEN
 
     def make_start(self):
         self.color = Color.BLUE
@@ -47,6 +58,14 @@ class Node:
 
     def make_end(self):
         self.color = Color.GOLD
+
+    def make_medium_cost(self):
+        self.cost = 5
+        self.color = Color.GREEN
+
+    def make_high_cost(self):
+        self.cost = 10
+        self.color = Color.DARK_GREEN
 
     def make_path(self):
         self.color = Color.WHITE
@@ -68,4 +87,7 @@ class Node:
 
         if self.row < self.total_rows - 1 and not graph[self.row + 1][self.col].is_barrier(): # DOWN
             self.neighbors.append(graph[self.row + 1][self.col])
+
+    def __lt__(self, other_node):
+        return self.cost < other_node.cost
         

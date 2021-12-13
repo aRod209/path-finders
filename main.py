@@ -24,11 +24,17 @@ def get_search_agent_initializer():
                 sys.exit()
 
             if event.type == KEYDOWN:
+                if event.key == pygame.K_a:
+                    search_agent_init = SearchAgents.AStarSearch
+
                 if event.key == pygame.K_b:
                     search_agent_init = SearchAgents.BreadthFirstSearch
 
                 if event.key == pygame.K_d:
                     search_agent_init = SearchAgents.DepthFirstSearch
+
+                if event.key == pygame.K_u:
+                    search_agent_init = SearchAgents.UniformCostSearch
 
                 run = False
 
