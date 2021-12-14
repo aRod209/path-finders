@@ -5,7 +5,6 @@ from queue import PriorityQueue
 import time
 import color_constants as color
 import illustrator
-import path_finder
 import game_constants as gc
 from Stack import Stack
 from Queue import Queue

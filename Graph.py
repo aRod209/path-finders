@@ -11,3 +11,12 @@ class Graph:
             for j in range(gc.ROWS):
                 node = Node(i, j, gc.WIDTH//gc.ROWS, gc.ROWS)
                 self.matrix[i].append(node)
+
+    def get_clicked_pos(self, pos):
+        gap = gc.WIDTH // gc.ROWS
+        x, y = pos
+
+        row = y // gap
+        col = x // gap
+
+        return row, col

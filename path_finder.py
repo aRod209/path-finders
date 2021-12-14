@@ -2,40 +2,13 @@ import pygame
 import game_constants as gc
 import illustrator
 from Graph import Graph
-from Node import Node
 from Problem import Problem
-
-
-def make_graph(rows, width):
-    grid = []
-    gap = width // rows
-
-    for i in range(rows):
-        grid.append([])
-        for j in range(rows):
-            node = Node(i, j, gap, rows)
-            grid[i].append(node)
-
-    return grid
-
-
-def get_clicked_pos(pos, rows, width):
-    gap = width // rows
-    x, y = pos
-
-    row = y // gap
-    col = x // gap
-
-    return row, col
 
 
 def main(search_agent_init):
     graph = Graph()
-    illustrator.draw(gc.WIN, graph)
-
     start_state = None
     goal_state = None
-
     run = True
 
     while run:
@@ -46,7 +19,7 @@ def main(search_agent_init):
 
             if pygame.mouse.get_pressed()[0]:  # LEFT
                 pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, gc.ROWS, gc.WIDTH)
+                row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
 
                 if not start_state and node != goal_state:
@@ -63,7 +36,7 @@ def main(search_agent_init):
                 illustrator.draw(gc.WIN, graph)
             elif pygame.mouse.get_pressed()[2]:  # RIGHT
                 pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, gc.ROWS, gc.WIDTH)
+                row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
                 node.reset()
 
@@ -91,15 +64,14 @@ def main(search_agent_init):
             keys = pygame.key.get_pressed()  #checking pressed keys
             if keys[pygame.K_LSHIFT]:
                 pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, gc.ROWS, gc.WIDTH)
+                row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
                 node.make_medium_cost()
 
-            if keys[pygame.KMOD_CTRL]:
+            if keys[pygame.K_LALT]:
                 pos = pygame.mouse.get_pos()
-                row, col = get_clicked_pos(pos, gc.ROWS, gc.WIDTH)
+                row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
-                node.make_medium_cost()
+                node.make_high_cost()
 
-        # drawing.draw(win, graph, ROWS, width)
     pygame.quit()

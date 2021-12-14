@@ -1,5 +1,4 @@
-import color_constants as Color
-import random
+import color_constants as color
 import pygame
 
 class Node:
@@ -8,7 +7,7 @@ class Node:
         self.col = col
         self.x = col * width
         self.y = row * width
-        self.color = Color.LIGHT_GREEN
+        self.color = color.LIGHT_GREEN
         self.cost = 1
         self.neighbors = []
         self.width = width
@@ -18,57 +17,57 @@ class Node:
         return self.row, self.col
 
     def is_closed(self):
-        return self.color == Color.PURPLE
+        return self.color == color.PURPLE
 
     def is_open(self):
-        return self.color == Color.RED
+        return self.color == color.RED
 
     def is_barrier(self):
-        return self.color == Color.BLACK
+        return self.color == color.BLACK
 
     def is_start(self):
-        return self.color == Color.BLUE
+        return self.color == color.BLUE
 
     def is_end(self):
-        return self.color == Color.GOLD
+        return self.color == color.GOLD
 
     def is_low_cost(self):
-        return self.color == Color.LIGHT_GREEN
+        return self.color == color.LIGHT_GREEN
 
     def is_medium_cost(self):
-        return self.color == Color.GREEN
+        return self.color == color.GREEN
 
     def is_high_cost(self):
-        return self.color == Color.DARK_GREEN
+        return self.color == color.DARK_GREEN
 
     def reset(self):
-        self.color = Color.LIGHT_GREEN
+        self.color = color.LIGHT_GREEN
 
     def make_start(self):
-        self.color = Color.BLUE
+        self.color = color.BLUE
 
     def make_closed(self):
-        self.color = Color.PURPLE
+        self.color = color.PURPLE
 
     def make_open(self):
-        self.color = Color.RED
+        self.color = color.RED
 
     def make_barrier(self):
-        self.color = Color.BLACK
+        self.color = color.BLACK
 
     def make_end(self):
-        self.color = Color.GOLD
+        self.color = color.GOLD
 
     def make_medium_cost(self):
         self.cost = 5
-        self.color = Color.GREEN
+        self.color = color.GREEN
 
     def make_high_cost(self):
         self.cost = 10
-        self.color = Color.DARK_GREEN
+        self.color = color.DARK_GREEN
 
     def make_path(self):
-        self.color = Color.WHITE
+        self.color = color.WHITE
 
     def draw(self, win):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width-1, self.width-1))
