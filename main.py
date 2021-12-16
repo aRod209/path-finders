@@ -2,7 +2,7 @@
 import path_finder
 import pygame
 import sys
-import SearchAgents
+import search_agents
 import illustrator
 from pygame.locals import *
 
@@ -25,16 +25,16 @@ def get_search_agent_initializer():
 
             if event.type == KEYDOWN:
                 if event.key == pygame.K_a:
-                    search_agent_init = SearchAgents.AStarSearch
+                    search_agent_init = search_agents.AStarSearch
 
                 if event.key == pygame.K_b:
-                    search_agent_init = SearchAgents.BreadthFirstSearch
+                    search_agent_init = search_agents.BreadthFirstSearch
 
                 if event.key == pygame.K_d:
-                    search_agent_init = SearchAgents.DepthFirstSearch
+                    search_agent_init = search_agents.DepthFirstSearch
 
                 if event.key == pygame.K_u:
-                    search_agent_init = SearchAgents.UniformCostSearch
+                    search_agent_init = search_agents.UniformCostSearch
 
                 run = False
 

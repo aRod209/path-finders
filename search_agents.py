@@ -1,13 +1,13 @@
 import sys
 import pygame
 from pygame.locals import *
-from queue import PriorityQueue
 import time
 import color_constants as color
 import illustrator
 import game_constants as gc
-from Stack import Stack
-from Queue import Queue
+from queue import PriorityQueue
+from fringe import Stack
+from fringe import Queue
 
 
 class SearchAgent:

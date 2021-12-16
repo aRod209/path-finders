@@ -1,8 +1,8 @@
 import pygame
 import game_constants as gc
 import illustrator
-from Graph import Graph
-from Problem import Problem
+from graph import Graph
+from problem import Problem
 
 
 def main(search_agent_init):
