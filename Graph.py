@@ -1,5 +1,5 @@
 import game_constants as gc
-from Node import Node
+from node import Node
 
 class Graph:
     def __init__(self):
