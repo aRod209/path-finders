@@ -28,7 +28,7 @@ class Node:
     def is_start(self):
         return self.color == color.BLUE
 
-    def is_end(self):
+    def is_goal(self):
         return self.color == color.GOLD
 
     def is_low_cost(self):
@@ -55,16 +55,16 @@ class Node:
     def make_barrier(self):
         self.color = color.BLACK
 
-    def make_end(self):
+    def make_goal(self):
         self.color = color.GOLD
 
     def make_medium_cost(self):
-        if not self.is_start() and not self.is_end():
+        if not self.is_start() and not self.is_goal():
             self.cost = 5
             self.color = color.GREEN
 
     def make_high_cost(self):
-        if not self.is_start() and not self.is_end():
+        if not self.is_start() and not self.is_goal():
             self.cost = 10
             self.color = color.DARK_GREEN
 

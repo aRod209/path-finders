@@ -28,7 +28,7 @@ def main(search_agent_init):
 
                 elif not goal_state and node != start_state:
                     goal_state = node
-                    goal_state.make_end()
+                    goal_state.make_goal()
 
                 elif node != goal_state and node != start_state:
                     node.make_barrier()
