@@ -59,12 +59,14 @@ class Node:
         self.color = color.GOLD
 
     def make_medium_cost(self):
-        self.cost = 5
-        self.color = color.GREEN
+        if not self.is_start() and not self.is_end():
+            self.cost = 5
+            self.color = color.GREEN
 
     def make_high_cost(self):
-        self.cost = 10
-        self.color = color.DARK_GREEN
+        if not self.is_start() and not self.is_end():
+            self.cost = 10
+            self.color = color.DARK_GREEN
 
     def make_path(self):
         self.color = color.WHITE
