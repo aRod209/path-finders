@@ -9,7 +9,7 @@ A visualizer for path finding algorithms.
 
 # How-To-Use
 - In the start screen, press the associated letter that corresponds to the search algorithm you want to run.
-- A screen with a grid of light-green/open nodes appears (we will refer to the squares as nodes).
+- A screen with a grid/graph of light-green/open nodes appears (we will refer to the squares as nodes).
 - In order to run the algorithm, at minimum, there must be a start state (blue node) and a goal state (gold node).
 - You can also set higher cost nodes(nodes a darker shade of green) and walls (black nodes) that block the algorithm's search.
 - You can press the space bar to run the algorithm.
@@ -35,6 +35,6 @@ A visualizer for path finding algorithms.
 ## Search Algorithms Currently Supported
 - Depth-First Search
 - Breadth-First Search
-- Iterative Deepening Depth First Search
+- Iterative Deepening Depth First Search (Note: This algorithm is particularly slow for the provided visulaization since the graph has many nodes that form cycles. It is not recommended to have the start state and end state far from each other. The visualization will give you an idea of where the algorithm is searching)
 - Uniform Cost Search
 - A* Search
