@@ -133,6 +133,7 @@ class IterativeDeepiningDepthFirstSearch(SearchAgent):
 
     def algorithm(self):
         for depth in range(50):
+            print(f'Current depth at: {depth}')
             self.depth_limited_search(depth)
 
             if self.problem.path:
@@ -142,44 +143,38 @@ class IterativeDeepiningDepthFirstSearch(SearchAgent):
             
 
     def depth_limited_search(self, max_depth):
-        closed = set()
         fringe = Stack()
         start_node = self.problem.start_state
         goal_node = self.problem.goal_state
 
-        fringe.add([start_node, [start_node]])
+        fringe.add([start_node, [start_node], 0])
 
         while not fringe.is_empty():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-            node, path = fringe.pop()
+            node, path, current_depth = fringe.pop()
 
             if node == goal_node:
                 path.append(node)
                 self.problem.path = path
                 return
 
-            if node not in closed:
-                closed.add(node)
+            if current_depth >= max_depth:
+                continue
 
-                if self.depth_from_start_state(node) >= max_depth:
-                    continue
+            for neighbor in node.neighbors:
 
-                for neighbor in node.neighbors:
-                    if neighbor in closed:
-                        continue
+                new_path = path.copy()
+                new_path.append(neighbor)
+                fringe.add([neighbor, new_path, current_depth + 1])
 
-                    new_path = path.copy()
-                    new_path.append(neighbor)
-                    fringe.add([neighbor, new_path])
-
-                    if neighbor is not start_node:
-                        neighbor.make_open()
-                    illustrator.draw(gc.WIN, self.graph)
-                if node != start_node:
-                    node.make_closed()
+                if neighbor is not start_node:
+                    neighbor.make_open()
+                illustrator.draw(gc.WIN, self.graph)
+            if node != start_node:
+                node.make_closed()
 
             illustrator.draw(gc.WIN, self.graph)
 
