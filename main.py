@@ -36,6 +36,9 @@ def get_search_agent_initializer():
                 if event.key == pygame.K_u:
                     search_agent_init = search_agents.UniformCostSearch
 
+                if event.key == pygame.K_i:
+                    search_agent_init = search_agents.IterativeDeepiningDepthFirstSearch
+
                 run = False
 
         pygame.display.update()

@@ -1,3 +1,4 @@
+from operator import ne
 import sys
 import pygame
 from pygame.locals import *
@@ -43,6 +44,9 @@ class SearchAgent:
             time.sleep(0.2)
             illustrator.draw(gc.WIN, self.graph)
 
+    def manhattan_distance(self, x1, y1, x2, y2):
+        return abs(x1 - x2) + abs(y1 - y2)
+
 
 class DepthFirstSearch(SearchAgent):
 
@@ -70,11 +74,13 @@ class DepthFirstSearch(SearchAgent):
                 closed.add(node)
 
                 for neighbor in node.neighbors:
+                    if neighbor in closed:
+                        continue
                     new_path = path.copy()
                     new_path.append(neighbor)
                     fringe.add((neighbor, new_path))
 
-                    if neighbor not in closed and neighbor is not start_node:
+                    if neighbor is not start_node:
                         neighbor.make_open()
                     illustrator.draw(gc.WIN, self.graph)
                 if node != start_node:
@@ -109,17 +115,78 @@ class BreadthFirstSearch(SearchAgent):
                 closed.add(node)
 
                 for neighbor in node.neighbors:
+                    if neighbor in closed:
+                        continue
                     new_path = path.copy()
                     new_path.append(neighbor)
                     fringe.add((neighbor, new_path))
 
-                    if neighbor not in closed and neighbor is not start_node:
+                    if neighbor is not start_node:
                         neighbor.make_open()
                     illustrator.draw(gc.WIN, self.graph)
                 if node != start_node:
                     node.make_closed()
 
             illustrator.draw(gc.WIN, self.graph)
+
+class IterativeDeepiningDepthFirstSearch(SearchAgent):
+
+    def algorithm(self):
+        for depth in range(50):
+            self.depth_limited_search(depth)
+
+            if self.problem.path:
+                return
+
+            illustrator.reset_closed_nodes(gc.WIN, self.graph, self.problem.goal_state)
+            
+
+    def depth_limited_search(self, max_depth):
+        closed = set()
+        fringe = Stack()
+        start_node = self.problem.start_state
+        goal_node = self.problem.goal_state
+
+        fringe.add([start_node, [start_node]])
+
+        while not fringe.is_empty():
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+            node, path = fringe.pop()
+
+            if node == goal_node:
+                path.append(node)
+                self.problem.path = path
+                return
+
+            if node not in closed:
+                closed.add(node)
+
+                if self.depth_from_start_state(node) >= max_depth:
+                    continue
+
+                for neighbor in node.neighbors:
+                    if neighbor in closed:
+                        continue
+
+                    new_path = path.copy()
+                    new_path.append(neighbor)
+                    fringe.add([neighbor, new_path])
+
+                    if neighbor is not start_node:
+                        neighbor.make_open()
+                    illustrator.draw(gc.WIN, self.graph)
+                if node != start_node:
+                    node.make_closed()
+
+            illustrator.draw(gc.WIN, self.graph)
+
+    def depth_from_start_state(self, node):
+        x1,y1 = node.get_pos()
+        x2,y2 = self.problem.start_state.get_pos()
+        return self.manhattan_distance(x1, y1, x2, y2)
 
 class UniformCostSearch(SearchAgent):
 
@@ -150,13 +217,15 @@ class UniformCostSearch(SearchAgent):
                 closed.add(node)
 
                 for neighbor in node.neighbors:
+                    if neighbor in closed:
+                        continue
                     new_path = path.copy()
                     new_path.append(neighbor)
                     new_g_cost = g_cost + neighbor.cost
                     tie_breaker += 1
                     fringe.put((new_g_cost, tie_breaker, (neighbor, new_path)))
 
-                    if neighbor not in closed and neighbor is not start_node:
+                    if neighbor is not start_node:
                         neighbor.make_open()
                     illustrator.draw(gc.WIN, self.graph)
 
@@ -195,6 +264,8 @@ class AStarSearch(SearchAgent):
                 closed.add(node)
 
                 for neighbor in node.neighbors:
+                    if neighbor in closed:
+                        continue
                     new_path = path.copy()
                     new_path.append(neighbor)
                     new_g_cost = g_cost + neighbor.cost
@@ -202,7 +273,7 @@ class AStarSearch(SearchAgent):
                     tie_breaker += 1
                     fringe.put((new_f_cost, tie_breaker, new_g_cost, (neighbor, new_path)))
 
-                    if neighbor not in closed and neighbor is not start_node:
+                    if neighbor is not start_node:
                         neighbor.make_open()
                     illustrator.draw(gc.WIN, self.graph)
 
@@ -214,4 +285,4 @@ class AStarSearch(SearchAgent):
     def hueristic(self, node):
         x1,y1 = node.get_pos()
         x2,y2 = self.problem.goal_state.get_pos()
-        return abs(x1 - x2) + abs(y1 - y2)
+        return self.manhattan_distance(x1, y1, x2, y2)
