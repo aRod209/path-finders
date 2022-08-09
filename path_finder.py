@@ -4,6 +4,9 @@ import illustrator
 from graph import Graph
 from problem import Problem
 
+quit_game = lambda event: event.type == pygame.QUIT
+left_mouse_pressed = lambda: pygame.mouse.get_pressed()[0]
+right_mouse_pressed = lambda: pygame.mouse.get_pressed()[2]
 
 def main(search_agent_init):
     graph = Graph()
@@ -13,11 +16,12 @@ def main(search_agent_init):
 
     while run:
         illustrator.draw(gc.WIN, graph)
+
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if quit_game(event):
                 run = False
 
-            if pygame.mouse.get_pressed()[0]:  # LEFT
+            if left_mouse_pressed():
                 pos = pygame.mouse.get_pos()
                 row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
@@ -34,7 +38,7 @@ def main(search_agent_init):
                     node.make_barrier()
 
                 illustrator.draw(gc.WIN, graph)
-            elif pygame.mouse.get_pressed()[2]:  # RIGHT
+            elif right_mouse_pressed():
                 pos = pygame.mouse.get_pos()
                 row, col = graph.get_clicked_pos(pos)
                 node = graph.matrix[row][col]
